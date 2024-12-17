@@ -2,7 +2,6 @@ import Users from "../model/userModel.js";
 import bcrypt from "bcryptjs";
 import generateToken from "../utils/generateToken.js";
 
-
 export const login = async (req, res) => {
   console.log(req.body);
   const { email, password } = req.body;
@@ -34,7 +33,7 @@ export const login = async (req, res) => {
         maxAge: 60 * 60 * 1000,
         sameSite: "Lax",
       });
-      console.log(res.cookie)
+      console.log(res.cookie);
       existingUser.password = undefined;
       res.status(201).json(existingUser);
     } else {
@@ -42,12 +41,13 @@ export const login = async (req, res) => {
       throw new Error("Login failed");
     }
   } catch (error) {
-    throw new Error("something went wrong")
+    throw new Error("something went wrong");
   }
 };
 export const signup = async (req, res) => {
-  const { email, password, username } = req.body;
-  if (!email.trim() || !password.trim() || !username.trim()) {
+  const { email, password, name } = req.body;
+  console.log(req.body);
+  if (!email.trim() || !password.trim() || !name.trim()) {
     res.status(400).json({ message: "Please enter all the fields" });
     return;
   }
@@ -60,20 +60,20 @@ export const signup = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 12);
 
     const user = await Users.create({
-      username,
+      username: name,
       email,
       password: hashedPassword,
     });
     if (user) {
       const token = generateToken(user);
-      console.log(token)
+      console.log(token);
       res.cookie("token", token, {
         httpOnly: true,
         secure: false,
         maxAge: 60 * 60 * 1000,
         sameSite: "Lax",
       });
-      console.log(res.cookie)
+      console.log(res.cookie);
       user.password = undefined;
       res.status(201).json(user);
     } else {

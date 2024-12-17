@@ -34,6 +34,7 @@ services:
     volumes:
       - ./server/auth-service:/app
     environment:
-      - MONGO_URI=mongodb+srv://hishammpsn:y7SIwtwzl8kZXqPu@cluster0.euxsp.mongodb.net/
+      - MONGO_URI=mongodb+srv://hishammpsn:y7SIwtwzl8kZXqPu@cluster0.euxsp.mongodb.net/auth_db?retryWrites=true&w=majority
+
       - SECRET=secret
       - PORT=5000

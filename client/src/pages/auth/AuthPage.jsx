@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Box,
   TextField,
@@ -10,9 +10,14 @@ import {
   Tabs,
   Tab,
 } from "@mui/material";
-import { login, signUp } from "../../../action/userAction";
-
+import { login, signUp } from "../../action/userAction";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../components/AuthProvider";
 const AuthPage = () => {
+  const navigate = useNavigate();
+  const { user, setUser } = useContext(AuthContext);
+  console.log(user);
+
   const [activeTab, setActiveTab] = useState(0);
   const [loginData, setLoginData] = useState({ email: "", password: "" });
   const [signupData, setSignupData] = useState({
@@ -26,16 +31,29 @@ const AuthPage = () => {
     setActiveTab(newValue);
   };
 
-  const handleLoginSubmit = (e) => {
+  const handleLoginSubmit = async (e) => {
     e.preventDefault();
     console.log("Login Data:", loginData);
-    login(loginData);
+    const user = await login(loginData);
+    if (user) {
+      setUser(user);
+      navigate("/");
+    }
   };
 
-  const handleSignupSubmit = (e) => {
+  const handleSignupSubmit = async (e) => {
     e.preventDefault();
-    signUp(signupData);
+    const user = await signUp(signupData);
+    if (user) {
+      setUser(user);
+      navigate("/");
+    }
   };
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, [user]);
 
   return (
     <Container maxWidth="sm">

@@ -1,20 +1,22 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import LoginPage from "./pages/auth/AuthPage";
-import Home from "./pages/Home/Home";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import HomePage from "./pages/Home/Home";
+import SignInPage from "./pages/auth/AuthPage";
+import { ThemeProvider } from "./components/AuthProvider";
 
 function App() {
-
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/" element={<Home />} />
-      </Routes>
-    </BrowserRouter>
+    <ThemeProvider>
+      <Router>
+        <Routes>
+          <Route path="/login" element={<SignInPage />} />
+
+          {/* Protected route, only accessible if user is signed in */}
+          <Route path="/" element={<HomePage />} />
+
+          {/* Add other routes here */}
+        </Routes>
+      </Router>
+    </ThemeProvider>
   );
 }
 

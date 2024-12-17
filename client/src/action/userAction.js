@@ -1,18 +1,15 @@
-import axios from 'axios'
+import axios from "axios";
 
-export const login = async (email, password) => {
-  console.log("login", email, password);
+export const login = async (userData) => {
+  console.log("login", userData);
   try {
     const { data } = await axios.post(
       `${import.meta.env.VITE_API_GATEWAY}/api/auth/login`,
-      {
-        email,
-        password,
-      }
+      userData
     );
     console.log(data);
-
-    //   localStorage.setItem("userInfo", JSON.stringify(data));
+    localStorage.setItem('userInfo', JSON.stringify(data));
+    return data
   } catch (error) {
     console.error("Error:", error);
     if (error.response && error.response.data) {
@@ -26,18 +23,16 @@ export const login = async (email, password) => {
   }
 };
 
-export const signUp = async (email, password) => {
+export const signUp = async (userData) => {
   try {
     const { data } = await axios.post(
-      `${process.env.API_GATEWAY}/api/auth/login`,
-      {
-        email,
-        password,
-      }
+      `${import.meta.env.VITE_API_GATEWAY}/api/auth/signup`,
+      userData
     );
     console.log(data);
 
-    //   localStorage.setItem("userInfo", JSON.stringify(data));
+    localStorage.setItem('userInfo', JSON.stringify(data));
+    return data;
   } catch (error) {
     console.error("Error:", error);
     if (error.response && error.response.data) {
