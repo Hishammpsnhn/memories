@@ -10,9 +10,10 @@ import {
   Tabs,
   Tab,
 } from "@mui/material";
+import { login, signUp } from "../../../action/userAction";
 
 const AuthPage = () => {
-  const [activeTab, setActiveTab] = useState(0); // 0 for Login, 1 for Signup
+  const [activeTab, setActiveTab] = useState(0);
   const [loginData, setLoginData] = useState({ email: "", password: "" });
   const [signupData, setSignupData] = useState({
     name: "",
@@ -28,13 +29,12 @@ const AuthPage = () => {
   const handleLoginSubmit = (e) => {
     e.preventDefault();
     console.log("Login Data:", loginData);
-    // Add your login logic here
+    login(loginData);
   };
 
   const handleSignupSubmit = (e) => {
     e.preventDefault();
-    console.log("Signup Data:", signupData);
-    // Add your signup logic here
+    signUp(signupData);
   };
 
   return (

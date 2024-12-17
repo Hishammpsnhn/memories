@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  # client:
+  #   build:
+  #     context: ./client
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "5173:5173"
+  #   volumes:
+  #     - ./client:/app
+  #   command: npm run dev
+  #   environment:
+  #     - API_GATEWAY='http://localhost:4000'
+
+  api-gateway:
+    build:
+      context: ./apiGateway
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./apiGateway:/app
+    environment:
+      - PORT=4000
+      - AUTH_SERVICE_URL=http://auth:5000
+
+  auth:
+    build:
+      context: ./server/auth-service
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./server/auth-service:/app
+    environment:
+      - MONGO_URI=mongodb+srv://hishammpsn:y7SIwtwzl8kZXqPu@cluster0.euxsp.mongodb.net/
+      - SECRET=secret
+      - PORT=5000
