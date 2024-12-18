@@ -1,7 +1,6 @@
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
-const proxy = require("express-http-proxy");
 const { createProxyMiddleware } = require("http-proxy-middleware");
 require("dotenv").config();
 
@@ -11,12 +10,20 @@ app.use(cors({
 }));
 app.use(morgan());
 
-const targetServiceUrl = process.env.AUTH_SERVICE_URL;
+const authServiceUrl = process.env.AUTH_SERVICE_URL;
+const postServiceUrl = process.env.POST_SERVICE_URL;
 
 app.use(
   "/api/auth",
   createProxyMiddleware({
-    target: targetServiceUrl,
+    target:authServiceUrl,
+    changeOrigin: true,
+  })
+);
+app.use(
+  "/api/post",
+  createProxyMiddleware({
+    target: postServiceUrl,
     changeOrigin: true,
   })
 );

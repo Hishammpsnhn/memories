@@ -24,6 +24,7 @@ services:
     environment:
       - PORT=4000
       - AUTH_SERVICE_URL=http://auth:5000
+      - POST_SERVICE_URL=http://post:5001
 
   auth:
     build:
@@ -38,3 +39,15 @@ services:
 
       - SECRET=secret
       - PORT=5000
+
+  post:
+    build:
+      context: ./server/post-service
+      dockerfile: Dockerfile
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./server/post-service:/app
+    environment:
+      - MONGO_URI=mongodb+srv://hishammpsn:y7SIwtwzl8kZXqPu@cluster0.euxsp.mongodb.net/post_db?retryWrites=true&w=majority
+      - PORT=5001
