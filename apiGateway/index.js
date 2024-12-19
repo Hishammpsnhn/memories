@@ -6,18 +6,20 @@ require("dotenv").config();
 
 const app = express();
 app.use(cors({
-    origin: 'http://localhost:5173'
+    origin: 'http://localhost:5173',
+    credentials:true,
 }));
 app.use(morgan());
 
-const authServiceUrl = process.env.AUTH_SERVICE_URL;
-const postServiceUrl = process.env.POST_SERVICE_URL;
+const authServiceUrl = process.env.AUTH_SERVICE_URL || 'http://localhost:5000';
+const postServiceUrl = process.env.POST_SERVICE_URL || 'http://localhost:5001';
 
 app.use(
   "/api/auth",
   createProxyMiddleware({
     target:authServiceUrl,
     changeOrigin: true,
+    cookieDomainRewrite: "localhost", 
   })
 );
 app.use(
@@ -25,6 +27,7 @@ app.use(
   createProxyMiddleware({
     target: postServiceUrl,
     changeOrigin: true,
+    cookieDomainRewrite: "localhost", 
   })
 );
 

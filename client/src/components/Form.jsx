@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { Box, TextField, Button, Typography } from "@mui/material";
+import axios from "axios";
+import { createPost } from "../action/postAction";
 
 const Form = () => {
   const [formData, setFormData] = useState({
     name: "",
     location: "",
-    imageBase64: "",
+    imageUrl: "",
     imageName: "",
   });
 
@@ -15,30 +17,53 @@ const Form = () => {
     image: false,
   });
 
+  const [uploading, setUploading] = useState(false);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
     setErrors({ ...errors, [name]: false });
   };
 
-  const handleImageUpload = (e) => {
+  const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) {
       setErrors({ ...errors, image: true });
       return;
     }
 
-    // Convert image to Base64
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setFormData({
-        ...formData,
-        imageBase64: reader.result,
+    setUploading(true);
+
+    // Upload to Cloudinary
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "olx_clone_ts");
+    // formData.append("cloud_name", "your_cloud_name"); // Replace with your Cloudinary cloud name
+
+    try {
+      const response = await axios.post(
+        `https://api.cloudinary.com/v1_1/dhs8o9scz/image/upload`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          withCredentials: false, // Explicitly set to false
+        }
+      );
+
+      setFormData((prev) => ({
+        ...prev,
+        imageUrl: response.data.secure_url,
         imageName: file.name,
-      });
+      }));
       setErrors({ ...errors, image: false });
-    };
-    reader.readAsDataURL(file);
+    } catch (error) {
+      console.error("Error uploading image to Cloudinary:", error);
+      setErrors({ ...errors, image: true });
+    } finally {
+      setUploading(false);
+    }
   };
 
   const handleSubmit = (e) => {
@@ -48,14 +73,14 @@ const Form = () => {
     const newErrors = {
       name: formData.name.trim() === "",
       location: formData.location.trim() === "",
-      image: formData.imageBase64 === "",
+      image: formData.imageUrl === "",
     };
 
     setErrors(newErrors);
 
     if (!Object.values(newErrors).some((error) => error)) {
       console.log("Form submitted:", formData);
-      // Add form submission logic here
+      createPost(formData);
     }
   };
 
@@ -107,8 +132,9 @@ const Form = () => {
         component="label"
         fullWidth
         sx={{ mt: 2, mb: 2 }}
+        disabled={uploading}
       >
-        Upload Image
+        {uploading ? "Uploading..." : "Upload Image"}
         <input
           type="file"
           accept="image/*"
@@ -122,17 +148,17 @@ const Form = () => {
         </Typography>
       )}
 
-      {/* Display Uploaded Image Info */}
-      {formData.imageName && (
+      {/* Display Uploaded Image */}
+      {formData.imageUrl && (
         <Box sx={{ mt: 2 }}>
           <img
-            src={formData.imageBase64}
+            src={formData.imageUrl}
             alt="Uploaded"
             style={{
-              maxWidth: "100%", 
-              height: "auto", 
+              maxWidth: "100%",
+              height: "auto",
               borderRadius: "8px",
-              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", 
+              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
               marginTop: "10px",
             }}
           />

@@ -1,14 +1,15 @@
-import Post from '../model/postModel'
+import Post from "../model/postModel.js";
 
 export const createPost = async (req, res) => {
   try {
-    const { title, location, author, image } = req.body;
-
+    const { name,  imageUrl, location } = req.body;
+    console.log(req.body)
+    console.log(req.user)
     const newPost = new Post({
-      title,
+      title: name,
       location,
-      author,
-      image,
+      author: req.user.id,
+      image: imageUrl,
     });
 
     await newPost.save();
@@ -21,6 +22,9 @@ export const createPost = async (req, res) => {
 };
 
 export const getAllPosts = async (req, res) => {
+  const token = req.cookies;
+  console.log("Token:", token);
+
   try {
     const posts = await Post.find();
     res.status(200).json(posts);
@@ -42,4 +46,3 @@ export const getPostById = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch post" });
   }
 };
-

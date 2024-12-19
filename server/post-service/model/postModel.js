@@ -1,6 +1,5 @@
-const mongoose = require("mongoose");
+import mongoose from 'mongoose';
 
-// Define the schema for the post
 const postSchema = new mongoose.Schema(
   {
     title: {
@@ -29,4 +28,4 @@ const postSchema = new mongoose.Schema(
 // Create the model based on the schema
 const Post = mongoose.model("Post", postSchema);
 
-module.exports = Post;
+export default Post;

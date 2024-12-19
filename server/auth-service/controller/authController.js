@@ -1,6 +1,7 @@
 import Users from "../model/userModel.js";
 import bcrypt from "bcryptjs";
 import generateToken from "../utils/generateToken.js";
+import sendNotificationToQueue from "../config/sentNotification.js";
 
 export const login = async (req, res) => {
   console.log(req.body);
@@ -27,15 +28,18 @@ export const login = async (req, res) => {
     }
     if (isPasswordCorrect) {
       const token = generateToken(existingUser);
-      res.cookie("token", token, {
-        httpOnly: true,
-        secure: false,
-        maxAge: 60 * 60 * 1000,
-        sameSite: "Lax",
-      });
-      console.log(res.cookie);
+
       existingUser.password = undefined;
-      res.status(201).json(existingUser);
+      existingUser.token = token;
+      const options = {
+        expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+        httpOnly: true,
+      };
+      res.status(200).cookie("token", token, options).json({
+        success: true,
+        token: token,
+        existingUser,
+      });
     } else {
       res.status(400);
       throw new Error("Login failed");
@@ -64,23 +68,29 @@ export const signup = async (req, res) => {
       email,
       password: hashedPassword,
     });
+    console.log(user)
     if (user) {
       const token = generateToken(user);
-      console.log(token);
-      res.cookie("token", token, {
-        httpOnly: true,
-        secure: false,
-        maxAge: 60 * 60 * 1000,
-        sameSite: "Lax",
-      });
-      console.log(res.cookie);
+      console.log(token)
+
       user.password = undefined;
-      res.status(201).json(user);
+      user.token = token;
+      sendNotificationToQueue(email, 'Welcome to Our Service', 'Thank you for registering!');
+
+      const options = {
+        expires: new Date(Date.now() + 3 * 24 * 60 * 60),
+        httpOnly: true,
+      };
+      res.status(200).cookie("token", token, options).json({
+        success: true,
+        token: token,
+        existingUser,
+      });
     } else {
       res.status(400);
       throw new Error("Login failed");
     }
   } catch (error) {
-    throw new Error("something wrong");
+    throw new Error("something wrong",error);
   }
 };

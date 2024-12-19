@@ -1,18 +1,7 @@
 version: "3.8"
 
 services:
-  # client:
-  #   build:
-  #     context: ./client
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - "5173:5173"
-  #   volumes:
-  #     - ./client:/app
-  #   command: npm run dev
-  #   environment:
-  #     - API_GATEWAY='http://localhost:4000'
-
+  # API Gateway Service
   api-gateway:
     build:
       context: ./apiGateway
@@ -25,7 +14,10 @@ services:
       - PORT=4000
       - AUTH_SERVICE_URL=http://auth:5000
       - POST_SERVICE_URL=http://post:5001
+    networks:
+      - app-network
 
+  # Authentication Service
   auth:
     build:
       context: ./server/auth-service
@@ -36,10 +28,15 @@ services:
       - ./server/auth-service:/app
     environment:
       - MONGO_URI=mongodb+srv://hishammpsn:y7SIwtwzl8kZXqPu@cluster0.euxsp.mongodb.net/auth_db?retryWrites=true&w=majority
-
       - SECRET=secret
       - PORT=5000
+      - RABBITMQ_URL=amqp://rabbitmq:5672
+    networks:
+      - app-network
+    depends_on:
+      - rabbitmq 
 
+  # Post Service
   post:
     build:
       context: ./server/post-service
@@ -51,3 +48,39 @@ services:
     environment:
       - MONGO_URI=mongodb+srv://hishammpsn:y7SIwtwzl8kZXqPu@cluster0.euxsp.mongodb.net/post_db?retryWrites=true&w=majority
       - PORT=5001
+    networks:
+      - app-network
+
+  # RabbitMQ Service
+  rabbitmq:
+    image: rabbitmq:3-management
+    hostname: my-rabbit
+    ports:
+      - "15672:15672"  # Management UI
+      - "5672:5672"    # RabbitMQ protocol
+    container_name: rabbitmq-container
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  # Notification Service
+  notification-service:
+    build:
+      context: ./server/email-service
+      dockerfile: Dockerfile
+    ports:
+      - "6000:6000"  
+    volumes:
+      - ./server/email-service:/app
+    environment:
+      - RABBITMQ_URL=amqp://rabbitmq:5672 
+      - EMAIL_ID=hishammpsn@gmail.com  
+      - PASS_KEY=ghmxhowpegsdumkf 
+    networks:
+      - app-network
+    depends_on:
+      - rabbitmq  
+
+networks:
+  app-network:
+    driver: bridge
