@@ -1,5 +1,8 @@
 const amqp = require('amqplib');
 const nodemailer = require('nodemailer');
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 // Set up the email transporter
 const transporter = nodemailer.createTransport({
