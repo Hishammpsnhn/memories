@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import { Box, TextField, Button, Typography } from "@mui/material";
 import axios from "axios";
 import { createPost } from "../action/postAction";
-
-const Form = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    location: "",
-    imageUrl: "",
-    imageName: "",
-  });
+let initialState = {
+  name: "",
+  location: "",
+  imageUrl: "",
+  imageName: "",
+}
+const Form = ({setPost}) => {
+  const [formData, setFormData] = useState(initialState);
 
   const [errors, setErrors] = useState({
     name: false,
@@ -18,6 +18,7 @@ const Form = () => {
   });
 
   const [uploading, setUploading] = useState(false);
+  const [loading,setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -66,7 +67,7 @@ const Form = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
 
     // Validate inputs
@@ -79,8 +80,13 @@ const Form = () => {
     setErrors(newErrors);
 
     if (!Object.values(newErrors).some((error) => error)) {
+      setLoading(true);
       console.log("Form submitted:", formData);
-      createPost(formData);
+      const newPost = await createPost(formData);
+      console.log("New post:", newPost);
+      setPost((prev)=> [...prev, newPost]);
+      setFormData(initialState);
+      setLoading(false);
     }
   };
 
@@ -172,6 +178,7 @@ const Form = () => {
         color="primary"
         fullWidth
         sx={{ mt: 2 }}
+        disabled={loading}
       >
         Submit
       </Button>

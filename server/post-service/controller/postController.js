@@ -85,3 +85,15 @@ export const getPostById = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch post" });
   }
 };
+
+export const getTopPostsLocation = (req, res) =>{
+  client.getTopLocation({}, (err, locations) => {
+    if (err) {
+      console.error("Error:", err);
+      res.status(500).json({ error: "Failed to fetch top locations" });
+    } else {
+      console.log("Received from server-location:", JSON.stringify(locations));
+      res.status(200).json(locations);
+    }
+  });
+}

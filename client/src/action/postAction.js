@@ -27,3 +27,17 @@ export const createPost = async (postData) => {
     console.error("Error:", error);
   }
 };
+
+export const getPost = async (id) => {
+
+  try {
+    const { data } = await axios.get(
+      `${import.meta.env.VITE_API_GATEWAY}/api/post/${id}`,
+      { withCredentials: true }
+    );
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};

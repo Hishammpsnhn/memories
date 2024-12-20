@@ -9,12 +9,12 @@ async function incrementVisit(location) {
     console.log("Location:", location);
 
     let analyticalData = await Analytical.findOne({ location });
-    
+
     if (!analyticalData) {
       analyticalData = new Analytical({ location, visitCount: 0 });
     }
     analyticalData.visitCount += 1;
-    
+
     await analyticalData.save();
     console.log(analyticalData);
     return analyticalData.visitCount;
@@ -27,9 +27,9 @@ async function incrementVisit(location) {
 async function getMostVisitedLocation() {
   try {
     // Find the location with the highest like count
-    const mostLikedLocation = await Analytical.findOne()
-      .sort({ likeCount: -1 })
-      .limit(1);
+    const mostLikedLocation = await Analytical.find().sort({
+      visitCount: -1,
+    });
     return mostLikedLocation;
   } catch (error) {
     throw new Error("Error fetching most liked location: " + error.message);

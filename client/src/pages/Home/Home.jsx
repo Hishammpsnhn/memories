@@ -28,20 +28,26 @@ const Home = () => {
 
   return (
     <Box sx={{ padding: 2 }}>
-      <Header />
       <Grid container spacing={2}>
         <Grid item xs={12} md={8}>
           <Grid container spacing={2}>
-            {post.map(({ title,id,location,createdAt,image }) => (
-              <Grid item xs={12} sm={6} md={4} key={id}>
-                <Card title={title} location={location} createdAt={createdAt} image={image}/>
+            {post.map((post) => (
+              <Grid item xs={12} sm={6} md={4} key={post.id}>
+                <Card
+                  title={post.title}
+                  location={post.location}
+                  createdAt={post.createdAt}
+                  image={post.image}
+                  views={post.views}
+                  id={post._id}
+                />
               </Grid>
             ))}
           </Grid>
         </Grid>
 
         <Grid item xs={12} md={4}>
-          <Form />
+          <Form setPost={setPost} />
         </Grid>
       </Grid>
     </Box>
