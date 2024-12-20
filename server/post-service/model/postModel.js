@@ -15,6 +15,10 @@ const postSchema = new mongoose.Schema(
       type: String,
       required: true, 
     },
+    views:{
+      type: Number,
+      default: 0,
+    },
     image: {
       type: String, 
       default: "", 

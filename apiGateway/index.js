@@ -24,6 +24,7 @@ app.use(
 );
 app.use(
   "/api/post",
+  
   createProxyMiddleware({
     target: postServiceUrl,
     changeOrigin: true,

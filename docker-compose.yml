@@ -48,6 +48,7 @@ services:
     environment:
       - MONGO_URI=mongodb+srv://hishammpsn:y7SIwtwzl8kZXqPu@cluster0.euxsp.mongodb.net/post_db?retryWrites=true&w=majority
       - PORT=5001
+      - ANALYTICAL_SERVICE_URL=analytical-service:40000
     networks:
       - app-network
 
@@ -80,6 +81,24 @@ services:
       - app-network
     depends_on:
       - rabbitmq  
+
+  analytical-service:
+    build:
+      context: ./server/analytical-service
+      dockerfile: Dockerfile
+    ports:
+      - "40000:40000"  # gRPC server port
+    volumes:
+      - ./server/analytical-service:/usr/src/app
+    environment:
+      - MONGO_URI=mongodb+srv://hishammpsn:y7SIwtwzl8kZXqPu@cluster0.euxsp.mongodb.net/analytical_db?retryWrites=true&w=majority
+      - PORT=5002
+    networks:
+      - app-network
+    depends_on:
+      - rabbitmq
+      - post 
+      
 
 networks:
   app-network:
