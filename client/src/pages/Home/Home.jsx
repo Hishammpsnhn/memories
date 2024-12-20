@@ -6,6 +6,7 @@ import Form from "../../components/Form";
 import { Box, Grid } from "@mui/material";
 import Header from "../../components/Header";
 import { getAllPost } from "../../action/postAction";
+import LocationChips from "../../components/LocationChips";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -27,7 +28,8 @@ const Home = () => {
   }, []);
 
   return (
-    <Box sx={{ padding: 2 }}>
+    <Box >
+      <LocationChips/>
       <Grid container spacing={2}>
         <Grid item xs={12} md={8}>
           <Grid container spacing={2}>
@@ -38,7 +40,6 @@ const Home = () => {
                   location={post.location}
                   createdAt={post.createdAt}
                   image={post.image}
-                  views={post.views}
                   id={post._id}
                 />
               </Grid>

@@ -1,8 +1,7 @@
 import axios from "axios";
 
-axios.defaults.withCredentials = true; 
+axios.defaults.withCredentials = true;
 export const getAllPost = async () => {
-
   try {
     const { data } = await axios.get(
       `${import.meta.env.VITE_API_GATEWAY}/api/post`,
@@ -29,7 +28,6 @@ export const createPost = async (postData) => {
 };
 
 export const getPost = async (id) => {
-
   try {
     const { data } = await axios.get(
       `${import.meta.env.VITE_API_GATEWAY}/api/post/${id}`,
@@ -37,6 +35,18 @@ export const getPost = async (id) => {
     );
     console.log(data);
     return data;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
+export const getTopLocation = async () => {
+  try {
+    const { data } = await axios.get(
+      `${import.meta.env.VITE_API_GATEWAY}/api/post/topLocations`,
+      { withCredentials: true }
+    );
+    console.log(data);
+    return data?.items;
   } catch (error) {
     console.error("Error:", error);
   }
