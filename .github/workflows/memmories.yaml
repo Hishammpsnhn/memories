@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        service: [apiGateway, auth-service, post-service, email-service]
+        service: [api_gateway-service, auth-service, post-service, email-service]
     steps:
       # Step 1: Checkout the repository
       - name: Checkout Repository
