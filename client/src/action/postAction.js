@@ -1,6 +1,14 @@
 import axios from "axios";
 
 axios.defaults.withCredentials = true;
+// axios.interceptors.response.use(
+//   (response) => response,
+//   (error) => {
+//     if (error.response?.status === 403) {
+//       window.location.href = '/login'; 
+//     }
+//   }
+// );
 export const getAllPost = async () => {
   try {
     const { data } = await axios.get(

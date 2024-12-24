@@ -30,9 +30,13 @@ export default function OverflowCard({
   createdAt,
 }) {
   const navigate = useNavigate();
-  const handleClick = () => {
-    navigate(`/post/${id}`);
-  };
+  const handleClick = React.useCallback(
+    (e) => {
+      e.stopPropagation();
+      navigate(`/post/${id}`);
+    },
+    [id, navigate]
+  );
   return (
     <Card variant="outlined" sx={{ width: 220 }} onClick={handleClick}>
       <CardOverflow>

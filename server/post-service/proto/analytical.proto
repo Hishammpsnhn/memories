@@ -2,14 +2,14 @@ syntax = "proto3";
 package todoPackage;
 
 service Todo {
-    rpc createTodo(TodoItem) returns (Count);
+    rpc incViewCount(Item) returns (Count);
     rpc getTopLocation(Empty) returns (Locationitems);
 }
 
 message Empty {}
 
 
-message TodoItem {
+message Item {
     string location = 1;
 }
 message Count {

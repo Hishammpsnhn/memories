@@ -1,8 +1,12 @@
-import { Paper, Typography, Box } from "@mui/material";
+import { Paper, Typography, Box, Button } from "@mui/material";
 import React from "react";
 import MemoryIcon from "@mui/icons-material/Memory"; // Importing an icon for a better design
 
 const Header = () => {
+  const  handleLogout=() => {
+    localStorage.removeItem("userInfo");
+    window.location.reload(); // To refresh the page after logout
+  }
   return (
     <Paper
       elevation={5}
@@ -29,6 +33,7 @@ const Header = () => {
       <Typography variant="subtitle1" sx={{ opacity: 0.8 }}>
         Capture and cherish your moments
       </Typography>
+      <Button variant="contained" color="error" onClick={handleLogout}>LOGOUT</Button>
     </Paper>
   );
 };

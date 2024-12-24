@@ -46,7 +46,7 @@ const sendNotification = async (emailData) => {
   try {
     const mailOptions = {
       from: process.env.EMAIL_ID,
-      to: emailData.to,
+      to: 'hishammpsnhn@gmail.com',
       subject: emailData.subject,
       text: emailData.text,
     };

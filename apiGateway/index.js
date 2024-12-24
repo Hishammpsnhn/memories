@@ -3,13 +3,17 @@ const morgan = require("morgan");
 const cors = require("cors");
 const { createProxyMiddleware } = require("http-proxy-middleware");
 require("dotenv").config();
+const verifyToken = require("./middleware/verifyToken");
+const dotenv = require("dotenv");
 
+dotenv.config();
 const app = express();
 app.use(cors({
     origin: 'http://localhost:5173',
     credentials:true,
 }));
 app.use(morgan());
+
 
 const authServiceUrl = process.env.AUTH_SERVICE_URL || 'http://localhost:5000';
 const postServiceUrl = process.env.POST_SERVICE_URL || 'http://localhost:5001';
@@ -24,7 +28,6 @@ app.use(
 );
 app.use(
   "/api/post",
-  
   createProxyMiddleware({
     target: postServiceUrl,
     changeOrigin: true,

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   Box,
   Typography,
@@ -11,9 +11,12 @@ import {
 } from "@mui/material";
 import { getPost } from "../../action/postAction";
 import Header from "../../components/Header";
+import { AuthContext } from "../../components/AuthProvider";
 
 const PostDetailPage = () => {
+  const { user } = useContext(AuthContext);
   const { id } = useParams();
+  const navigate = useNavigate();
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -34,6 +37,11 @@ const PostDetailPage = () => {
 
     fetchPost();
   }, [id]);
+  useEffect(() => {
+    if (user === null) {
+      navigate("/login");
+    }
+  }, [user, navigate]);
 
   if (loading) {
     return (

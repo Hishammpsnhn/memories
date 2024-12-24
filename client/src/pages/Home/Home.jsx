@@ -28,8 +28,8 @@ const Home = () => {
   }, []);
 
   return (
-    <Box >
-      <LocationChips/>
+    <Box>
+      <LocationChips />
       <Grid container spacing={2}>
         <Grid item xs={12} md={8}>
           <Grid container spacing={2}>
@@ -41,6 +41,7 @@ const Home = () => {
                   createdAt={post.createdAt}
                   image={post.image}
                   id={post._id}
+                  views={post.views}
                 />
               </Grid>
             ))}

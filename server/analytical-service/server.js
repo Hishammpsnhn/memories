@@ -16,11 +16,11 @@ const todoPackage = grpcObject.todoPackage;
 const server = new grpc.Server();
 
 server.addService(todoPackage.Todo.service, {
-  createTodo: createTodo,
+  incViewCount: incViewCount,
   getTopLocation: getTopLocation,
 });
 
-async function createTodo(call, callback) {
+async function incViewCount(call, callback) {
   console.log(call.request);
   const a = await incrementVisit(call.request.location);
   console.log(a);

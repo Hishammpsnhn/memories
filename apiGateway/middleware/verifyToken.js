@@ -1,8 +1,7 @@
-import jwt from "jsonwebtoken";
-
+const jwt = require('jsonwebtoken');
 function verifyToken(req, res, next) {
-  console.log("verifyToken", req.cookies);
   const token = req.cookies?.token;
+  console.log("verifyToken", req.cookies);
   console.log(token,process.env.SECRET)
   if (token) {
     jwt.verify(token, process.env.SECRET, async (err, decoded) => {
@@ -16,4 +15,4 @@ function verifyToken(req, res, next) {
   }
 }
 
-export default verifyToken;
+module.exports = verifyToken;

@@ -78,7 +78,7 @@ export const signup = async (req, res) => {
       sendNotificationToQueue(email, 'Welcome to Our Service', 'Thank you for registering!');
 
       const options = {
-        expires: new Date(Date.now() + 3 * 24 * 60 * 60),
+        expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
         httpOnly: true,
       };
       res.status(200).cookie("token", token, options).json({

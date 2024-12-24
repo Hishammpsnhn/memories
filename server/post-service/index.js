@@ -16,7 +16,6 @@ const corsOptions = {
 dotenv.config()
 app.use(cookieParser());
 
-// Apply CORS middleware to the API Gateway
 app.use(cors(corsOptions));
 
 app.use(morgan("dev"));

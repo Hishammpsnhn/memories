@@ -11,17 +11,17 @@ const client = new todoPackage.Todo(
   "analytical-service:40000",
   grpc.credentials.createInsecure()
 );
-// Function to increment the visit count in AnalyticalService
+
 const getViewCount = (location) => {
   return new Promise((resolve, reject) => {
-    client.createTodo({ location: location }, (err, res) => {
+    client.incViewCount({ location: location }, (err, res) => {
       if (err) {
         console.error("Error:", err);
-        reject(err); // Reject the promise if there's an error
+        reject(err); 
       } else {
         console.log("Received from server:", JSON.stringify(res));
         console.log("Count:", res.count);
-        resolve(res.count); // Resolve the promise with the count
+        resolve(res.count); 
       }
     });
   });
