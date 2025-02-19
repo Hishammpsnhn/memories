@@ -7,10 +7,10 @@ import authRoute from "./routes/authRoute.js";
 import dotenv from "dotenv";
 const app = express();
 const corsOptions = {
-  origin: "http://localhost:4000", 
-  methods: "GET,POST,PUT,DELETE", 
-  credentials: true
-}
+    origin: ["http://localhost:4000", ],
+    methods: "GET,POST,PUT,DELETE",
+    credentials: true,
+  };
 dotenv.config();
 app.use(cors(corsOptions));
 
