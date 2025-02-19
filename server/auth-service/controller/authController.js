@@ -45,6 +45,7 @@ export const login = async (req, res) => {
       throw new Error("Login failed");
     }
   } catch (error) {
+    console.log(error);
     throw new Error("something went wrong",error);
   }
 };
@@ -91,6 +92,7 @@ export const signup = async (req, res) => {
       throw new Error("Login failed");
     }
   } catch (error) {
+    console.error("Error registering user:", error);
     throw new Error("something wrong",error);
   }
 };

@@ -20,8 +20,7 @@ spec:
           envFrom:
             - configMapRef:
                 name: app-config
-            - secretRef:
-                name: app-secrets
+ 
 ---
 apiVersion: v1
 kind: Service

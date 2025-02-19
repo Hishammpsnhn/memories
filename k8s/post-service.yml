@@ -18,8 +18,8 @@ spec:
           ports:
             - containerPort: 5000
           envFrom:
-            - secretRef:
-                name: app-secrets
+            # - secretRef:
+            #     name: app-secrets
 ---
 apiVersion: v1
 kind: Service
