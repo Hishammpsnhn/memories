@@ -12,11 +12,11 @@ app.use(cors({
     origin: 'http://localhost:5173',
     credentials:true,
 }));
-app.use(morgan());
+app.use(morgan("dev"));
 
 
-const authServiceUrl = process.env.AUTH_SERVICE_URL || 'http://localhost:5000';
-const postServiceUrl = process.env.POST_SERVICE_URL || 'http://localhost:5001';
+const authServiceUrl = process.env.AUTH_SERVICE_URL || 'http://auth:5000';
+const postServiceUrl = process.env.POST_SERVICE_URL || 'http://post:5001';
 
 app.use(
   "/api/auth",
