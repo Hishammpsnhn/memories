@@ -17,9 +17,13 @@ spec:
           image: hishammpsn/memories-auth-service:latest
           ports:
             - containerPort: 5000
-          envFrom:
-            - secretRef:
-                name: app-secrets
+          env:
+            - name: MONGO_URI
+              value: "mongodb+srv://hishammpsn:y7SIwtwzl8kZXqPu@cluster0.euxsp.mongodb.net/auth_db?retryWrites=true&w=majority"
+            - name: EMAIL_ID
+              value: "hishammpsn@gmail.com"
+            - name: PASS_KEY
+              value: "ghmxhowpegsdumkf"
 ---
 apiVersion: v1
 kind: Service
